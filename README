@@ -1,0 +1,18 @@
+关于ADB-GUI(暂定名)
+
+初衷
+Linux环境下没有好用的，直观的Android手机综合管理工具（类似豌豆荚或91手机助手），就以SDK提供的工具为基础写了这么一套工具，全部使用了system()函数直接调用，保证稳定。
+
+特性
+直接调用SDK组件
+纯Gtk开发
+支持自动设置环境变量
+
+系统需求
+理论支持所有支持Gtk+2.0的Linux系统
+编译需要libgtk支持
+ubuntu用户：
+sudo apt-get install libgtk2.0*
+
+開源哥(Z.Shang)
+2012.5.23
