@@ -24,12 +24,18 @@ void btnfselect_clicked(GtkWidget *widget, gpointer *data)
 
 void btnpush_clicked(GtkWidget *widget, gpointer *data)
 {
+	if((access("$ADB/adb",X_OK))==0)
+	{
 	char cmd[255];
 	strcat(cmd,"adb push ");
 	strcat(cmd, str_path);
 	strcat(cmd," /sdcard/ ");
-	//printf("%s\n",cmd);
 	system(cmd);
+	}
+	else
+	{
+	printf("ADB is unavalible!");
+	}
 }
 int main(int argc, char *argv[])
 {
