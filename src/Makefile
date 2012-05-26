@@ -1,8 +1,7 @@
-adb_gui.o : adb_gui.c adb_gui.h
-	gcc -c adb_gui.c  `pkg-config --cflags --libs gtk+-2.0`
+debug : adb_gui.c adb_gui.h
+	gcc -g -Wall adb_gui.c -o adb_gui `pkg-config --cflags --libs gtk+-2.0`
 
-adb_gui : adb_gui.o
-	gcc -o adb_gui.o
-
-clean :
-	rm *.o
+out : adb_gui.c adb_gui.h
+	gcc adb_gui.c -o adb_gui `pkg-config --cflags --libs gtk+-2.0`
+	mv adb_gui ../output/
+	cp *.png ../output/
