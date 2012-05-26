@@ -38,3 +38,18 @@ void adbbucontact(const char *path)
 		strcat(cmd,path);
 		system(cmd);
 }
+
+void setadb(const char *path)
+{
+	int i;
+	const char *c1="echo  \" export ADB= ";
+	const char *c2="\nexport PATH=$PATH:ADB \" >> $HOME\/.bashrc";
+	const char *c3="source $HOME\/.bashrc";
+	i=strlen(c1)+strlen(path)+strlen(c2);
+	char cmd[i];
+	strcpy(cmd,c1);
+	strcat(cmd,path);
+	strcat(cmd,c2);
+	system(cmd);
+	system(c3);
+}
