@@ -24,12 +24,15 @@
 		void btnquit_clicked(GtkWidget *widget, gpointer *data);
 		void fuc_adbpush(GtkWidget *widget,gpointer *data);
 		void fuc_adbinstall(GtkWidget *widget,gpointer *data);
-
+		void btnreboot_clicked();
+		void btnrebootrec_clicked();
+		void btnrebootbl_clicked();
 
 //Universal Declare 声明全局变量
 		GtkWidget *wd_splash; //Splash Window 闪现屏幕
 		GtkWidget *wd_main; //Main Window 主窗体
 		GtkWidget *wd_fselect; //File Select Window 文件选择窗口
+		GtkWidget *wd_reboot; //Reboot Window 重启窗口
 
 
 int main(int argc, char *argv[])
@@ -91,7 +94,9 @@ int main(int argc, char *argv[])
 		btn_quit=gtk_button_new_with_label("Quit");
 		gtk_table_attach (GTK_TABLE(tbl_topright),btn_quit,1,2,0,1,(GtkAttachOptions)(GTK_FILL),(GtkAttachOptions)(0),10,10);
 		g_signal_connect(G_OBJECT(btn_quit),"clicked",G_CALLBACK(btnquit_clicked),(gpointer) wd_main);
-		
+		btn_adbreboot=gtk_button_new_with_label("Reboot"); //Initialize btn_adbreboot 初始化 btn_adbreboot
+		g_signal_connect(G_OBJECT(btn_adbreboot),"clicked",G_CALLBACK(btnadbreboot_clicked),(gpointer) wd_main);
+		gtk_table_attach (GTK_TABLE(tbl_bottom),btn_adbreboot,1,2,0,1,(GtkAttachOptions)(GTK_FILL),(GtkAttachOptions)(0),10,10);
 		
 		
 		gtk_main ();	
@@ -136,6 +141,29 @@ void btnadbinstall_clicked(GtkWidget *widget, gpointer *data)
 		g_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(wd_fselect)->cancel_button),"clicked",GTK_SIGNAL_FUNC(fuc_cancel),NULL);
 }
 
+void btnadbreboot_clicked(GtkWidget *widget, gpointer *data)
+{
+		wd_reboot=gtk_window_new(GTK_WINDOW_TOPLEVEL); //Initialize Window 初始化重启窗体
+		gtk_container_set_border_width(GTK_CONTAINER(wd_reboot),10); //Set Border Width 设置边框宽度
+		gtk_window_set_title (GTK_WINDOW(wd_reboot),"Reboot"); //Set Title 设置标题
+		gtk_window_set_position(GTK_WINDOW(wd_reboot),GTK_WIN_POS_CENTER); //Set Initial Position 设置初始位置：屏幕中央
+		GtkWidget *tbl_reboot;
+		GtkWidget *btn_reboot_rec, *btn_reboot_bl, *btn_reboot;
+		tbl_reboot=gtk_table_new(3,1,FALSE);
+		gtk_container_add(GTK_CONTAINER(wd_reboot), tbl_reboot);
+		gtk_table_set_row_spacings(GTK_TABLE(tbl_reboot),10);
+		btn_reboot_rec=gtk_button_new_with_label("Reboot Recovery");
+		gtk_table_attach(GTK_TABLE(tbl_reboot), btn_reboot_rec, 0,1,0,1,(GtkAttachOptions)(GTK_FILL),(GtkAttachOptions)(0),0,0);
+		g_signal_connect(G_OBJECT(btn_reboot_rec),"clicked",G_CALLBACK(btnrebootrec_clicked), (gpointer) wd_reboot); //Recovery
+		btn_reboot_bl=gtk_button_new_with_label("Reboot Bootloader");
+		gtk_table_attach(GTK_TABLE(tbl_reboot), btn_reboot_bl, 0,1,1,2,(GtkAttachOptions)(GTK_FILL),(GtkAttachOptions)(0),0,0);
+		g_signal_connect(G_OBJECT(btn_reboot_bl),"clicked",G_CALLBACK(btnrebootbl_clicked),(gpointer) wd_reboot); //Bootloader
+		btn_reboot=gtk_button_new_with_label("Reboot Normally");
+		gtk_table_attach(GTK_TABLE(tbl_reboot), btn_reboot, 0,1,2,3,(GtkAttachOptions)(GTK_FILL),(GtkAttachOptions)(0),0,0);
+		g_signal_connect(G_OBJECT(btn_reboot),"clicked",G_CALLBACK(btnreboot_clicked),(gpointer) wd_reboot); //Normal
+		gtk_widget_show_all (wd_reboot);
+}
+
 void btnbackupcontact_clicked(GtkWidget *widget, gpointer *data)
 {
 
@@ -174,4 +202,19 @@ void fuc_adbinstall(GtkWidget *widget,gpointer *data)
 GtkFunction fuc_cancel(GtkWidget *widget,gpointer *data)
 {
 			gtk_widget_destroy (wd_fselect);
+}
+
+void btnrebootrec_clicked()
+{
+	system("adb reboot recovery");
+}
+
+void btnrebootbl_clicked()
+{
+	system("adb reboot bootloader");
+}
+
+void btnreboot_clicked()
+{
+	system("adb reboot");
 }

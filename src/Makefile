@@ -1,30 +1,8 @@
+adb_gui.o : adb_gui.c adb_gui.h
+	gcc -c adb_gui.c  `pkg-config --cflags --libs gtk+-2.0`
 
-## Created by Anjuta
+adb_gui : adb_gui.o
+	gcc -o adb_gui.o
 
-CC = gcc
-CFLAGS = -g -Wall
-OBJECTS = ABD-GUI.o
-INCFLAGS = 
-LDFLAGS = -Wl,-rpath,/usr/local/lib
-LIBS = 
-
-all: ABD-GUI
-
-ABD-GUI: $(OBJECTS)
-	$(CC) -o ABD-GUI $(OBJECTS) $(LDFLAGS) $(LIBS)
-
-.SUFFIXES:
-.SUFFIXES:	.c .cc .C .cpp .o
-
-.c.o :
-	$(CC) -o $@ -c $(CFLAGS) $< $(INCFLAGS)
-
-count:
-	wc *.c *.cc *.C *.cpp *.h *.hpp
-
-clean:
-	rm -f *.o
-
-.PHONY: all
-.PHONY: count
-.PHONY: clean
+clean :
+	rm *.o
